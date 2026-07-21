@@ -38,8 +38,11 @@ saved as reusable scripts that can be run again.
 ### Step 1 — Gather publication data ⬜ IN PROGRESS
 Goal: collect the list of papers + citation counts broken down by year
 (needed for the growth charts).
-- [ ] Identify the author profile (Google Scholar / ORCID / OpenAlex)
-- [ ] Decide primary data source
+- [x] Identify the author profile — **ORCID 0000-0003-1922-439X**
+      (Vagisha Sharma, University of Washington; proteomics / mass-spec informatics)
+- [x] Wrote `scripts/find_orcid.py` (reusable ORCID lookup by name/affiliation)
+- [ ] Decide primary data source (ORCID has only 3 works & no citation history →
+      recommend **OpenAlex keyed by ORCID** for full list + citations-by-year)
 - [ ] Write reusable fetch script → save to `scripts/`
 - [ ] Save raw + cleaned data → `data/`
 - [ ] Review data for accuracy with the user
