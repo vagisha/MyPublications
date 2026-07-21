@@ -35,17 +35,25 @@ saved as reusable scripts that can be run again.
 - [x] Add `.gitignore` and `README.md`
 - [x] Push to GitHub as a public repo
 
-### Step 1 — Gather publication data ⬜ IN PROGRESS
+### Step 1 — Gather publication data ⬜ AWAITING REVIEW
 Goal: collect the list of papers + citation counts broken down by year
 (needed for the growth charts).
 - [x] Identify the author profile — **ORCID 0000-0003-1922-439X**
       (Vagisha Sharma, University of Washington; proteomics / mass-spec informatics)
 - [x] Wrote `scripts/find_orcid.py` (reusable ORCID lookup by name/affiliation)
-- [ ] Decide primary data source (ORCID has only 3 works & no citation history →
-      recommend **OpenAlex keyed by ORCID** for full list + citations-by-year)
-- [ ] Write reusable fetch script → save to `scripts/`
-- [ ] Save raw + cleaned data → `data/`
-- [ ] Review data for accuracy with the user
+- [x] Primary data source = **OpenAlex keyed by ORCID** (full list + citations-by-year)
+- [x] Wrote `scripts/fetch_openalex.py` (retries when OpenAlex is busy)
+- [x] Saved data: `data/openalex_works_raw.json`, `data/publications.json`,
+      `data/publications.csv`
+- [x] Wrote `scripts/make_review_sheet.py` → `data/publications_review.xlsx`
+- [ ] **USER: review spreadsheet, flag any papers that are not yours**
+
+**Fetched:** 32 works, 5,106 total citations.
+**Citation-by-year:** 2012–2026 (cumulative ~9 → ~5,064; ~42 cites predate 2012;
+2026 is a partial year).
+**Auto-flagged as possible name collision (1):** 2022 "A Modified Feature
+Optimization Approach with Convolutional Neural Network..." (co-authors Amandeep
+Verma, Neelam Goel — different field). Awaiting user confirmation.
 
 ### Step 2 — Design the page ⬜ TODO
 Goal: layout with a publications list and citation growth chart(s).
