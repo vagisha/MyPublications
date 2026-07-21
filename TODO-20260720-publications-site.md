@@ -86,9 +86,13 @@ Goal: layout with a publications list and citation growth chart(s).
 **Hard requirement:** page must be a **single standalone HTML file** — all
 CSS/JS/chart-rendering inlined, no external/CDN requests, works offline.
 
-- [ ] Build page generator script → save to `scripts/`
-- [ ] Generate into `site/`
-- [ ] Review with the user
+- [x] Wrote `scripts/build_site.py` (charts hand-rolled in vanilla SVG/JS, no
+      CDN deps) → generates `site/index.html`
+- [x] Generated `site/index.html` (44 KB, 27 publications)
+- [x] Verified in-browser: charts render correctly, table sort/filter/search
+      work, DOI links resolve, name bolding + author-expand toggle work,
+      no console errors, no external resource loads (confirmed standalone)
+- [ ] **USER: review the page**
 
 ### Step 3 — Publish live ⬜ TODO
 Goal: a shareable live URL.

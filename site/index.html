@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vagisha Sharma — Publications</title>
+<style>
+  :root {
+    --bg: #fafafa;
+    --panel: #ffffff;
+    --text: #1a1a2e;
+    --muted: #6b7280;
+    --border: #e5e7eb;
+    --c1: #2563eb; /* blue */
+    --c2: #db2777; /* pink */
+    --c3: #16a34a; /* green */
+    --c4: #ea580c; /* orange */
+    --c5: #7c3aed; /* purple */
+    --c6: #0891b2; /* teal */
+    --c7: #ca8a04; /* amber */
+    --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+  }
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 0 20px 60px; }
+
+  header.hero {
+    padding: 48px 20px 32px;
+    text-align: center;
+    background: linear-gradient(135deg, #eef2ff 0%, #fdf2f8 50%, #ecfeff 100%);
+    border-bottom: 1px solid var(--border);
+  }
+  header.hero h1 { margin: 0 0 4px; font-size: 2.2rem; letter-spacing: -0.02em; }
+  header.hero .subtitle { color: var(--muted); font-size: 1.05rem; margin-bottom: 18px; }
+  .links a {
+    display: inline-block;
+    margin: 0 6px;
+    padding: 7px 16px;
+    border-radius: 999px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    color: var(--c1);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    box-shadow: var(--shadow);
+  }
+  .links a:hover { border-color: var(--c1); }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 14px;
+    margin: -28px 0 36px;
+  }
+  .stat {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px 16px;
+    text-align: center;
+    box-shadow: var(--shadow);
+    border-top: 4px solid var(--accent, var(--c1));
+  }
+  .stat .num { font-size: 1.9rem; font-weight: 800; }
+  .stat .label { color: var(--muted); font-size: 0.82rem; text-transform: uppercase; letter-spacing: .04em; }
+
+  h2.section-title {
+    font-size: 1.3rem;
+    margin: 44px 0 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--border);
+  }
+
+  .charts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(440px, 1fr));
+    gap: 20px;
+  }
+  .chart-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px;
+    box-shadow: var(--shadow);
+  }
+  .chart-card h3 { margin: 0 0 4px; font-size: 1rem; }
+  .chart-card .chart-note { color: var(--muted); font-size: 0.78rem; margin-bottom: 10px; }
+  .chart-card svg { width: 100%; height: auto; display: block; }
+  .legend { display: flex; gap: 16px; font-size: 0.78rem; color: var(--muted); margin-top: 6px; flex-wrap: wrap; }
+  .legend span.swatch { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 4px; vertical-align: middle; }
+
+  .table-controls {
+    display: flex; gap: 10px; flex-wrap: wrap; align-items: center;
+    margin-bottom: 12px;
+  }
+  .table-controls input[type=search], .table-controls select {
+    padding: 9px 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 0.92rem;
+    background: var(--panel);
+  }
+  .table-controls input[type=search] { flex: 1; min-width: 220px; }
+  .result-count { color: var(--muted); font-size: 0.85rem; margin-left: auto; }
+
+  table.pubs {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  table.pubs th, table.pubs td {
+    padding: 10px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    font-size: 0.92rem;
+  }
+  table.pubs th {
+    background: #f8fafc;
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: .03em;
+    color: var(--muted);
+  }
+  table.pubs th.sorted-desc::after { content: " ▼"; }
+  table.pubs th.sorted-asc::after { content: " ▲"; }
+  table.pubs tbody tr:hover { background: #fafbfc; }
+  table.pubs td.title-cell a { color: var(--text); text-decoration: none; font-weight: 600; }
+  table.pubs td.title-cell a:hover { color: var(--c1); text-decoration: underline; }
+  table.pubs td.title-cell .venue { color: var(--muted); font-size: 0.82rem; display: block; margin-top: 2px; }
+  .badge {
+    display: inline-block;
+    padding: 2px 9px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 0.82rem;
+    background: #eef2ff;
+    color: var(--c1);
+  }
+  .type-pill {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 0.76rem;
+    background: #f1f5f9;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  .authors .you { font-weight: 700; }
+  .authors .more-toggle {
+    color: var(--c1);
+    cursor: pointer;
+    font-size: 0.85rem;
+    text-decoration: underline;
+  }
+
+  footer {
+    margin-top: 50px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 0.82rem;
+    text-align: center;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0f1117;
+      --panel: #171923;
+      --text: #e6e6ef;
+      --muted: #9099a8;
+      --border: #2a2d3a;
+      --shadow: 0 1px 3px rgba(0,0,0,0.4);
+    }
+    header.hero { background: linear-gradient(135deg, #1a1b2e 0%, #2a1a24 50%, #0f2530 100%); }
+    table.pubs th { background: #1c1f2b; }
+    .badge { background: #1c2340; }
+    .type-pill { background: #1c1f2b; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>Vagisha Sharma</h1>
+  <div class="subtitle">University of Washington</div>
+  <div class="links">
+    <a href="https://orcid.org/0000-0003-1922-439X" target="_blank" rel="noopener">ORCID</a>
+  </div>
+</header>
+
+<div class="stats" id="stats"></div>
+
+<h2 class="section-title">Citation &amp; Publication Trends</h2>
+<div class="charts-grid" id="charts"></div>
+
+<h2 class="section-title">Publications</h2>
+<div class="table-controls">
+  <input type="search" id="search" placeholder="Search title, author, or venue…">
+  <select id="typeFilter"><option value="">All types</option></select>
+  <span class="result-count" id="resultCount"></span>
+</div>
+<div style="overflow-x:auto;">
+<table class="pubs" id="pubsTable">
+  <thead>
+    <tr>
+      <th data-key="title">Title</th>
+      <th data-key="authors">Authors</th>
+      <th data-key="type">Type</th>
+      <th data-key="year">Year</th>
+      <th data-key="cited_by_count" class="sorted-desc">Citations</th>
+    </tr>
+  </thead>
+  <tbody id="pubsBody"></tbody>
+</table>
+</div>
+
+<footer>
+  Data from <a href="https://openalex.org" target="_blank" rel="noopener">OpenAlex</a>, keyed by ORCID <a href="https://orcid.org/0000-0003-1922-439X" target="_blank" rel="noopener">0000-0003-1922-439X</a>. Curated by hand — see this project's repository for the full pipeline and curation log. Citation counts are as tracked by OpenAlex and may lag or differ slightly from Google Scholar. Last updated 2026-07-20.
+</footer>
+
+</div>
+
+<script id="pub-data" type="application/json">[{"title": "The ProteomeXchange consortium in 2026: making proteomics data FAIR", "authors": ["Eric W. Deutsch", "Nuno Bandeira", "Yasset Pérez‐Riverol", "Vagisha Sharma", "Jeremy Carver", "Luis Mendoza", "Deepti J Kundu", "Chakradhar Bandla", "Selvakumar Kamatchinathan", "Suresh Hewapathirana", "Zhi Sun", "Shin Kawano", "Shujiro Okuda", "Brian Connolly", "Brendan MacLean", "Michael J. MacCoss", "Tao Chen", "Yunping Zhu", "Yasushi Ishihama", "Juan Antonio Vizcaíno"], "venue": "Nucleic Acids Research", "type": "article", "year": 2025, "cited_by_count": 33, "doi": "10.1093/nar/gkaf1146", "landing_page_url": "https://doi.org/10.1093/nar/gkaf1146", "counts_by_year": {"2026": 31, "2025": 2}}, {"title": "Comet Fragment-Ion Indexing for Enhanced Peptide Sequencing", "authors": ["Christopher D. McGann", "Erik J. Bergstrom", "Vagisha Sharma", "Lilian R. Heil", "Qing Yu", "Jimmy K. Eng", "Devin K. Schweppe"], "venue": "Journal of Proteome Research", "type": "article", "year": 2025, "cited_by_count": 4, "doi": "10.1021/acs.jproteome.4c01094", "landing_page_url": "https://doi.org/10.1021/acs.jproteome.4c01094", "counts_by_year": {"2026": 4}}, {"title": "Comprehensive Proteomics Metadata and Integrative Web Portals Facilitate Sharing and Integration of LINCS Multiomics Data", "authors": ["D. Vidović", "Behrouz Shamsaei", "Stephan C. Schürer", "Phillip Kogan", "Szymon Chojnacki", "Michal Kouril", "Mario Medvedovic", "Wen Niu", "Evren U. Azeloglu", "Marc R. Birtwistle", "Yibang Chen", "Tong Chen", "Jens Hansen", "Bin Hu", "Ravi Iyengar", "Gomathi Jayaraman", "Hong Li", "Tong Liu", "Eric A. Sobie", "Yuguang Xiong", "Matthew J. Berberich", "Gary A. Bradshaw", "Mirra Chung", "Robert A. Everley", "Benjamin L. Gaudio", "Marc Hafner", "Marian Kalocsay", "Caitlin E. Mills", "Maulik K. Nariya", "Peter K. Sorger", "Kartik Subramanian", "Chiara Victor", "Maria G. Bañuelos", "Victoria Dardov", "Ronald J. Holewinski", "Danica-Mae Manalo", "Berhan Mandefro", "Andrea Matlock", "Loren Ornelas", "Dhruv Sareen", "Clive N. Svendsen", "Vineet Vaibhav", "Jennifer E. Van Eyk", "Vidya Venkatraman", "Steve Finkbiener", "Ernest Fraenkel", "Jeffrey D. Rothstein", "Leslie M. Thompson", "Jacob K. Asiedu", "Steven A. Carr", "Karen E. Christianson", "Desiree Davison", "Deborah Dele‐Oni", "Katherine C. DeRuff", "Shawn B. Egri", "Alvaro Sebastian Vaca Jácome", "Jacob D. Jaffe", "Daniel D. Lam", "Lev Litichevskiy", "Xiaodong Lü", "James Mullahoo", "Adam Officer", "Malvina Papanastasiou", "Ryan Peckner", "Caidin Toder", "Joel Blanchard", "Michael Bula", "Tak Ko", "Li‐Huei Tsai", "Jennie Z. Young", "Vagisha Sharma", "Ajay Pillai", "Jarek Meller", "Michael J. MacCoss"], "venue": "Molecular & Cellular Proteomics", "type": "article", "year": 2025, "cited_by_count": 1, "doi": "10.1016/j.mcpro.2025.100947", "landing_page_url": "https://doi.org/10.1016/j.mcpro.2025.100947", "counts_by_year": {"2026": 1}}, {"title": "Corrigendum to “Comprehensive Proteomics Metadata and Integrative Web Portals Facilitate Sharing and Integration of LINCS Multiomics Data”", "authors": ["D. Vidović", "Behrouz Shamsaei", "Stephan C. Schürer", "Phillip Kogan", "Szymon Chojnacki", "Michal Kouril", "Mario Medvedovic", "Wen Niu", "Evren U. Azeloglu", "Marc R. Birtwistle", "Yibang Chen", "Tong Chen", "Jens Hansen", "Bin Hu", "Ravi Iyengar", "Gomathi Jayaraman", "Hong Li", "Tong Liu", "Eric A. Sobie", "Yuguang Xiong", "Matthew J. Berberich", "Gary A. Bradshaw", "Mirra Chung", "Robert A. Everley", "Benjamin L. Gaudio", "Marc Hafner", "Marian Kalocsay", "Caitlin E. Mills", "Maulik K. Nariya", "Peter K. Sorger", "Kartik Subramanian", "Chiara Victor", "Maria G. Bañuelos", "Victoria Dardov", "Ronald J. Holewinski", "Danica-Mae Manalo", "Berhan Mandefro", "Andrea Matlock", "Loren Ornelas", "Dhruv Sareen", "Clive N. Svendsen", "Vineet Vaibhav", "Jennifer E. Van Eyk", "Vidya Venkatraman", "Steve Finkbiener", "Ernest Fraenkel", "Jeffrey D. Rothstein", "Leslie M. Thompson", "Jacob K. Asiedu", "Steven A. Carr", "Karen E. Christianson", "Desiree Davison", "Deborah Dele‐Oni", "Katherine C. DeRuff", "Shawn B. Egri", "Alvaro Sebastian Vaca Jácome", "Jacob D. Jaffe", "Daniel D. Lam", "Lev Litichevskiy", "Xiaodong Lü", "James Mullahoo", "Adam Officer", "Malvina Papanastasiou", "Ryan Peckner", "Caidin Toder", "Joel Blanchard", "Michael Bula", "Tak Ko", "Li‐Huei Tsai", "Jennie Z. Young", "Vagisha Sharma", "Jarek Meller", "Michael J. MacCoss"], "venue": "Molecular & Cellular Proteomics", "type": "erratum", "year": 2025, "cited_by_count": 0, "doi": "10.1016/j.mcpro.2025.100995", "landing_page_url": "https://doi.org/10.1016/j.mcpro.2025.100995", "counts_by_year": {}}, {"title": "A Framework for Quality Control in Quantitative Proteomics", "authors": ["Kristine A. Tsantilas", "Gennifer E. Merrihew", "Julia Robbins", "Richard S. Johnson", "Jea Park", "Deanna L. Plubell", "Jesse D. Canterbury", "Eric Huang", "Michael Riffle", "Vagisha Sharma", "Brendan MacLean", "Josh Eckels", "Christine Wu", "Michael S. Bereman", "Sandra E. Spencer Miko", "Andrew N. Hoofnagle", "Michael J. MacCoss"], "venue": "Journal of Proteome Research", "type": "article", "year": 2024, "cited_by_count": 28, "doi": "10.1021/acs.jproteome.4c00363", "landing_page_url": "https://doi.org/10.1021/acs.jproteome.4c00363", "counts_by_year": {"2026": 10, "2025": 15, "2024": 3}}, {"title": "The ProteomeXchange consortium at 10 years: 2023 update", "authors": ["Eric W. Deutsch", "Nuno Bandeira", "Yasset Pérez‐Riverol", "Vagisha Sharma", "Jeremy Carver", "Luis Mendoza", "Deepti J Kundu", "Shengbo Wang", "Chakradhar Bandla", "Selvakumar Kamatchinathan", "Suresh Hewapathirana", "Benjamin Pullman", "Julie Wertz", "Zhi Sun", "Shin Kawano", "Shujiro Okuda", "Yu Watanabe", "Brendan MacLean", "Michael J. MacCoss", "Yunping Zhu", "Yasushi Ishihama", "Juan Antonio Vizcaíno"], "venue": "Nucleic Acids Research", "type": "article", "year": 2022, "cited_by_count": 876, "doi": "10.1093/nar/gkac1040", "landing_page_url": "https://doi.org/10.1093/nar/gkac1040", "counts_by_year": {"2026": 136, "2025": 296, "2024": 301, "2023": 142, "2022": 1}}, {"title": "Proteomic profiling dataset of chemical perturbations in multiple biological backgrounds", "authors": ["Deborah Dele‐Oni", "Karen E. Christianson", "Shawn B. Egri", "Alvaro Sebastian Vaca Jácome", "Katherine C. DeRuff", "James Mullahoo", "Vagisha Sharma", "Desiree Davison", "Tak Ko", "Michael Bula", "Joel Blanchard", "Jennie Z. Young", "Lev Litichevskiy", "Xiaodong Lü", "Daniel D. Lam", "Jacob K. Asiedu", "Caidin Toder", "Adam Officer", "Ryan Peckner", "Michael J. MacCoss", "Li‐Huei Tsai", "Steven A. Carr", "Malvina Papanastasiou", "Jacob D. Jaffe"], "venue": "Scientific Data", "type": "data-paper", "year": 2021, "cited_by_count": 17, "doi": "10.1038/s41597-021-01008-4", "landing_page_url": "https://doi.org/10.1038/s41597-021-01008-4", "counts_by_year": {"2026": 1, "2025": 2, "2024": 3, "2023": 5, "2022": 5, "2021": 1}}, {"title": "Skyline Batch: An Intuitive User Interface for Batch Processing with Skyline", "authors": ["Alexandra N. Marsh", "Vagisha Sharma", "Surya K. Mani", "Olga Vitek", "Michael J. MacCoss", "Brendan MacLean"], "venue": "Journal of Proteome Research", "type": "article", "year": 2021, "cited_by_count": 9, "doi": "10.1021/acs.jproteome.1c00749", "landing_page_url": "https://doi.org/10.1021/acs.jproteome.1c00749", "counts_by_year": {"2026": 1, "2025": 1, "2024": 4, "2023": 2, "2022": 1}}, {"title": "A proteomic atlas of senescence-associated secretomes for aging biomarker development", "authors": ["Nathan Basisty", "Abhijit Kale", "Ok Hee Jeon", "Chisaka Kuehnemann", "Therese Payne", "Chirag Rao", "Anja Holtz", "Samah Shah", "Vagisha Sharma", "Luigi Ferrucci", "Judith Campisi", "Birgit Schilling"], "venue": "PLoS Biology", "type": "article", "year": 2020, "cited_by_count": 1312, "doi": "10.1371/journal.pbio.3000599", "landing_page_url": "https://doi.org/10.1371/journal.pbio.3000599", "counts_by_year": {"2026": 133, "2025": 229, "2024": 246, "2023": 222, "2022": 213, "2021": 183, "2020": 83, "2019": 3}}, {"title": "Skyline for Small Molecules: A Unifying Software Package for Quantitative Metabolomics", "authors": ["Kendra J. Adams", "Brian Pratt", "Neelanjan Bose", "Laura G. Dubois", "Lisa St. John‐Williams", "Kevin M. Perrott", "Karina Ky", "Pankaj Kapahi", "Vagisha Sharma", "Michael J. MacCoss", "M. Arthur Moseley", "Carol A. Colton", "Brendan MacLean", "Birgit Schilling", "J. Will Thompson", "Alzheimer’s Disease Metabolomics Consortium"], "venue": "Journal of Proteome Research", "type": "article", "year": 2020, "cited_by_count": 637, "doi": "10.1021/acs.jproteome.9b00640", "landing_page_url": "https://doi.org/10.1021/acs.jproteome.9b00640", "counts_by_year": {"2026": 77, "2025": 140, "2024": 157, "2023": 117, "2022": 76, "2021": 57, "2020": 12}}, {"title": "Audit logs to enforce document integrity in Skyline and Panorama", "authors": ["Tobias Rohde", "Rita Chupalov", "Nicholas Shulman", "Vagisha Sharma", "Josh Eckels", "Brian Pratt", "Michael J. MacCoss", "Brendan MacLean"], "venue": "Bioinformatics", "type": "article", "year": 2020, "cited_by_count": 5, "doi": "10.1093/bioinformatics/btaa547", "landing_page_url": "https://doi.org/10.1093/bioinformatics/btaa547", "counts_by_year": {"2024": 2, "2022": 1, "2021": 2}}, {"title": "The HUPO-PSI standardized spectral library format", "authors": ["Ralf Gabriels", "Nuno Bandeira", "Wout Bittremieux", "Jeremy Carver", "Chambers, Matthew", "Shin Kawano", "Henry Lam", "Tytus D. Mak", "Yasset Pérez‐Riverol", "Benjamin J Pullman", "Vagisha Sharma", "Jim Shofstahl", "Tim Van Den Bossche", "Juan Antonio Vizcaíno", "Yunping Zhu", "Eric W. Deutsch"], "venue": "Ghent University Academic Bibliography (Ghent University)", "type": "conference-paper", "year": 2020, "cited_by_count": 0, "doi": "10.5281/zenodo.3607178", "landing_page_url": "https://biblio.ugent.be/publication/8643839", "counts_by_year": {}}, {"title": "The ProteomeXchange consortium in 2020: enabling ‘big data’ approaches in proteomics", "authors": ["Eric W. Deutsch", "Nuno Bandeira", "Vagisha Sharma", "Yasset Pérez‐Riverol", "Jeremy Carver", "Deepti J Kundu", "David García‐Seisdedos", "Andrew F. Jarnuczak", "Suresh Hewapathirana", "Benjamin Pullman", "Julie Wertz", "Zhi Sun", "Shin Kawano", "Shujiro Okuda", "Yu Watanabe", "Henning Hermjakob", "Brendan MacLean", "Michael J. MacCoss", "Yunping Zhu", "Yasushi Ishihama", "Juan Antonio Vizcaíno"], "venue": "Nucleic Acids Research", "type": "article", "year": 2019, "cited_by_count": 778, "doi": "10.1093/nar/gkz984", "landing_page_url": "https://doi.org/10.1093/nar/gkz984", "counts_by_year": {"2026": 10, "2025": 50, "2024": 111, "2023": 159, "2022": 207, "2021": 159, "2020": 80, "2019": 2}}, {"title": "piNET: a versatile web platform for downstream analysis and visualization of proteomics data", "authors": ["Behrouz Shamsaei", "Szymon Chojnacki", "Marcin Pilarczyk", "Mehdi Fazel Najafabadi", "Chuming Chen", "Karen Ross", "Andrea Matlock", "Jeremy L. Muhlich", "Somchai Chutipongtanate", "D. Vidović", "Vagisha Sharma", "Juozas Vasiliauskas", "Jake Jaffe", "Michael J. MacCoss", "Cathy Wu", "Ajay Pillai", "Avi Ma’ayan", "Stephan C. Schürer", "Mario Medvedovic", "Jarek Meller"], "venue": "bioRxiv (Cold Spring Harbor Laboratory)", "type": "preprint", "year": 2019, "cited_by_count": 2, "doi": "10.1101/607432", "landing_page_url": "https://doi.org/10.1101/607432", "counts_by_year": {"2020": 2}}, {"title": "Panorama Public: A Public Repository for Quantitative Data Sets Processed in Skyline", "authors": ["Vagisha Sharma", "Josh Eckels", "Birgit Schilling", "Christina Ludwig", "Jacob D. Jaffe", "Michael J. MacCoss", "Brendan MacLean"], "venue": "Molecular & Cellular Proteomics", "type": "article", "year": 2018, "cited_by_count": 286, "doi": "10.1074/mcp.ra117.000543", "landing_page_url": "https://doi.org/10.1074/mcp.ra117.000543", "counts_by_year": {"2026": 16, "2025": 38, "2024": 42, "2023": 37, "2022": 39, "2021": 42, "2020": 40, "2019": 22, "2018": 9, "2014": 1}}, {"title": "A Library of Phosphoproteomic and Chromatin Signatures for Characterizing Cellular Responses to Drug Perturbations", "authors": ["Lev Litichevskiy", "Ryan Peckner", "Jennifer G. Abelin", "Jacob K. Asiedu", "Amanda L. Creech", "John F. Davis", "Desiree Davison", "Caitlin M. Dunning", "Jarrett D. Egertson", "Shawn B. Egri", "Joshua Gould", "Tak Ko", "Sarah Johnson", "David L. Lahr", "Daniel D. Lam", "Zihan Liu", "Nicholas Lyons", "Xiaodong Lü", "Brendan MacLean", "Alison E. Mungenast", "Adam Officer", "Ted Natoli", "Malvina Papanastasiou", "Jinal Patel", "Vagisha Sharma", "Courtney Toder", "Andrew A. Tubelli", "Jennie Z. Young", "Steven A. Carr", "Todd R. Golub", "Aravind Subramanian", "Michael J. MacCoss", "Li‐Huei Tsai", "Jacob D. Jaffe"], "venue": "Cell Systems", "type": "article", "year": 2018, "cited_by_count": 96, "doi": "10.1016/j.cels.2018.03.012", "landing_page_url": "https://doi.org/10.1016/j.cels.2018.03.012", "counts_by_year": {"2026": 3, "2025": 13, "2024": 5, "2023": 10, "2022": 10, "2021": 17, "2020": 10, "2019": 15, "2018": 10, "2017": 3}}, {"title": "Using the CPTAC Assay Portal to Identify and Implement Highly Characterized Targeted Proteomics Assays", "authors": ["Jeffrey R. Whiteaker", "Goran N. Halusa", "Andrew N. Hoofnagle", "Vagisha Sharma", "Brendan MacLean", "Ping Yan", "John A. Wrobel", "Jacob J. Kennedy", "D.R. Mani", "Lisa J. Zimmerman", "Matthew R. Meyer", "Mehdi Mesri", "Emily S. Boja", "Steven A. Carr", "Daniel W. Chan", "Xian Chen", "Jing Chen", "Sherri R. Davies", "Matthew J. Ellis", "David Fenyö", "Tara Hiltke", "Karen A. Ketchum", "Chris Kinsinger", "Eric Kuhn", "D.C. Liebler", "Tao Liu", "Michael Loss", "Michael J. MacCoss", "Weijun Qian", "Robert Rivers", "Karin Rodland", "Kelly V. Ruggles", "Mitchell G. Scott", "Richard Smith", "Stefani N. Thomas", "R. Reid Townsend", "Gordon Whiteley", "Chaochao Wu", "Hui Zhang", "Zhen Zhang", "Henry Rodriguez", "Amanda G. Paulovich"], "venue": "Methods in molecular biology", "type": "book-chapter", "year": 2016, "cited_by_count": 101, "doi": "10.1007/978-1-4939-3524-6_13", "landing_page_url": "https://doi.org/10.1007/978-1-4939-3524-6_13", "counts_by_year": {"2026": 3, "2025": 4, "2024": 60, "2023": 5, "2022": 3, "2021": 6, "2020": 3, "2019": 3, "2018": 5, "2017": 4, "2016": 4}}, {"title": "An Automated Pipeline to Monitor System Performance in Liquid Chromatography–Tandem Mass Spectrometry Proteomic Experiments", "authors": ["Michael S. Bereman", "Joshua Beri", "Vagisha Sharma", "Cory Nathe", "Josh Eckels", "Brendan MacLean", "Michael J. MacCoss"], "venue": "Journal of Proteome Research", "type": "article", "year": 2016, "cited_by_count": 74, "doi": "10.1021/acs.jproteome.6b00744", "landing_page_url": "https://doi.org/10.1021/acs.jproteome.6b00744", "counts_by_year": {"2026": 3, "2025": 6, "2024": 11, "2023": 6, "2022": 8, "2021": 6, "2020": 11, "2019": 3, "2018": 14, "2017": 5, "2016": 1}}, {"title": "Visualization and Dissemination of Multidimensional Proteomics Data Comparing Protein Abundance During <i>Caenorhabditis elegans</i> Development", "authors": ["Michael Riffle", "Gennifer E. Merrihew", "Daniel Jaschob", "Vagisha Sharma", "Trisha N. Davis", "William Stafford Noble", "Michael J. MacCoss"], "venue": "Journal of the American Society for Mass Spectrometry", "type": "article", "year": 2015, "cited_by_count": 7, "doi": "10.1007/s13361-015-1193-z", "landing_page_url": "https://doi.org/10.1007/s13361-015-1193-z", "counts_by_year": {"2024": 1, "2019": 1, "2018": 3, "2016": 2}}, {"title": "CPTAC Assay Portal: a repository of targeted proteomic assays", "authors": ["Jeffrey R. Whiteaker", "Goran N. Halusa", "Andrew N. Hoofnagle", "Vagisha Sharma", "Brendan MacLean", "Ping Yan", "John A. Wrobel", "Jacob J. Kennedy", "D.R. Mani", "Lisa J. Zimmerman", "Matthew R. Meyer", "Mehdi Mesri", "Henry Rodriguez", "Amanda G. Paulovich"], "venue": "Nature Methods", "type": "article", "year": 2014, "cited_by_count": 265, "doi": "10.1038/nmeth.3002", "landing_page_url": "https://doi.org/10.1038/nmeth.3002", "counts_by_year": {"2026": 7, "2025": 18, "2024": 75, "2023": 19, "2022": 36, "2021": 24, "2020": 16, "2019": 12, "2018": 16, "2017": 10, "2016": 17, "2015": 11, "2014": 4}}, {"title": "Panorama: A Targeted Proteomics Knowledge Base", "authors": ["Vagisha Sharma", "Josh Eckels", "Greg Taylor", "Nicholas Shulman", "Andrew B. Stergachis", "Shannon Joyner", "Ping Yan", "Jeffrey R. Whiteaker", "Goran N. Halusa", "Birgit Schilling", "Bradford W. Gibson", "Christopher M. Colangelo", "Amanda G. Paulovich", "Steven A. Carr", "Jacob D. Jaffe", "Michael J. MacCoss", "Brendan MacLean"], "venue": "Journal of Proteome Research", "type": "article", "year": 2014, "cited_by_count": 237, "doi": "10.1021/pr5006636", "landing_page_url": "https://doi.org/10.1021/pr5006636", "counts_by_year": {"2026": 4, "2025": 14, "2024": 18, "2023": 18, "2022": 17, "2021": 28, "2020": 26, "2019": 15, "2018": 27, "2017": 24, "2016": 24, "2015": 18, "2014": 4}}, {"title": "A framework for installable external tools in Skyline", "authors": ["Daniel Broudy", "Trevor Killeen", "Meena Choi", "Nicholas Shulman", "D.R. Mani", "Susan E. Abbatiello", "D.R. Mani", "Rushdy Ahmad", "Alexandria K. Sahu", "Birgit Schilling", "Kaipo Tamura", "Yuval Boss", "Vagisha Sharma", "Bradford W. Gibson", "Steven A. Carr", "Olga Vitek", "Michael J. MacCoss", "Brendan MacLean"], "venue": "Bioinformatics", "type": "article", "year": 2014, "cited_by_count": 36, "doi": "10.1093/bioinformatics/btu148", "landing_page_url": "https://doi.org/10.1093/bioinformatics/btu148", "counts_by_year": {"2024": 4, "2023": 1, "2021": 2, "2020": 4, "2019": 3, "2018": 3, "2017": 4, "2016": 7, "2015": 5, "2014": 3}}, {"title": "XLink-DB: Database and Software Tools for Storing and Visualizing Protein Interaction Topology Data", "authors": ["Chunxiang Zheng", "Chad R. Weisbrod", "Juan D. Chavez", "Jimmy K. Eng", "Vagisha Sharma", "Xia Wu", "James E. Bruce"], "venue": "Journal of Proteome Research", "type": "article", "year": 2013, "cited_by_count": 50, "doi": "10.1021/pr301162j", "landing_page_url": "https://doi.org/10.1021/pr301162j", "counts_by_year": {"2025": 1, "2024": 2, "2023": 5, "2022": 2, "2021": 5, "2020": 3, "2019": 5, "2018": 10, "2017": 4, "2016": 4, "2015": 5, "2014": 1, "2013": 3}}, {"title": "A Mass Spectrometry Proteomics Data Management Platform", "authors": ["Vagisha Sharma", "Jimmy K. Eng", "Michael J. MacCoss", "Michael Riffle"], "venue": "Molecular & Cellular Proteomics", "type": "article", "year": 2012, "cited_by_count": 41, "doi": "10.1074/mcp.o111.015149", "landing_page_url": "https://doi.org/10.1074/mcp.o111.015149", "counts_by_year": {"2026": 3, "2025": 3, "2024": 3, "2023": 3, "2022": 2, "2021": 1, "2020": 1, "2019": 1, "2018": 3, "2017": 5, "2016": 5, "2015": 4, "2014": 4, "2013": 2, "2012": 1}}, {"title": "P1) Technology Development in a Multidisciplinary Center", "authors": ["Trisha N. Davis", "Daniel A. Skelly", "Gennifer E. Merrihew", "Michael Riffle", "Sara J. Cooper", "Emily Mitchell", "Beth Graczyk", "Vagisha Sharma", "Daniel Jaschob", "William Stafford Noble", "Stanley Fields", "Michael J. MacCoss", "Eric G. Muller", "Maitreya J. Dunham", "Joshua M. Akey"], "venue": "Europe PMC (PubMed Central)", "type": "article", "year": 2012, "cited_by_count": 0, "doi": null, "landing_page_url": "http://europepmc.org/articles/PMC3630640", "counts_by_year": {}}, {"title": "Precursor Charge State Prediction for Electron Transfer Dissociation Tandem Mass Spectra", "authors": ["Vagisha Sharma", "Jimmy K. Eng", "Sergey Feldman", "Priska D. von Haller", "Michael J. MacCoss", "William Stafford Noble"], "venue": "Journal of Proteome Research", "type": "article", "year": 2010, "cited_by_count": 13, "doi": "10.1021/pr1006685", "landing_page_url": "https://doi.org/10.1021/pr1006685", "counts_by_year": {"2025": 2, "2024": 1, "2022": 1, "2019": 1, "2017": 2, "2016": 1, "2013": 3, "2012": 1}}, {"title": "Corra: Computational framework and tools for LC-MS discovery and targeted mass spectrometry-based proteomics", "authors": ["Mi‐Youn Brusniak", "Bernd Bodenmiller", "David Campbell", "Kelly Cooke", "James S. Eddes", "Andrew Garbutt", "Hollis Lau", "Simon Letarte", "Lukas Mueller", "Vagisha Sharma", "Olga Vitek", "Ning Zhang", "Ruedi Aebersold", "Julian D. Watts"], "venue": "BMC Bioinformatics", "type": "article", "year": 2008, "cited_by_count": 74, "doi": "10.1186/1471-2105-9-542", "landing_page_url": "https://doi.org/10.1186/1471-2105-9-542", "counts_by_year": {"2024": 1, "2022": 1, "2021": 3, "2020": 1, "2019": 1, "2018": 4, "2017": 1, "2015": 2, "2014": 7, "2013": 7, "2012": 7}}]</script>
+<script>
+(function() {
+  "use strict";
+  var YOU = "Vagisha Sharma";
+  var PUBS = JSON.parse(document.getElementById("pub-data").textContent);
+  var PALETTE = ["#2563eb", "#db2777", "#16a34a", "#ea580c", "#7c3aed", "#0891b2", "#ca8a04"];
+
+  /* ---------- derived stats ---------- */
+  function hIndex(pubs) {
+    var counts = pubs.map(function(p){ return p.cited_by_count; }).sort(function(a,b){ return b-a; });
+    var h = 0;
+    for (var i = 0; i < counts.length; i++) {
+      if (counts[i] >= i + 1) h = i + 1; else break;
+    }
+    return h;
+  }
+  var totalPapers = PUBS.length;
+  var totalCitations = PUBS.reduce(function(s,p){ return s + p.cited_by_count; }, 0);
+  var years = PUBS.map(function(p){ return p.year; }).filter(Boolean);
+  var minYear = Math.min.apply(null, years), maxYear = Math.max.apply(null, years);
+
+  var statsEl = document.getElementById("stats");
+  var stats = [
+    {num: totalPapers, label: "Publications", accent: PALETTE[0]},
+    {num: totalCitations.toLocaleString(), label: "Total citations", accent: PALETTE[1]},
+    {num: hIndex(PUBS), label: "h-index", accent: PALETTE[2]},
+    {num: (maxYear - minYear + 1) + " yrs", label: minYear + " – " + maxYear, accent: PALETTE[3]}
+  ];
+  stats.forEach(function(s) {
+    var d = document.createElement("div");
+    d.className = "stat";
+    d.style.setProperty("--accent", s.accent);
+    d.innerHTML = '<div class="num">' + s.num + '</div><div class="label">' + s.label + '</div>';
+    statsEl.appendChild(d);
+  });
+
+  /* ---------- per-year aggregation ---------- */
+  var citByYear = {}, pubByYear = {};
+  PUBS.forEach(function(p) {
+    if (p.year) pubByYear[p.year] = (pubByYear[p.year] || 0) + 1;
+    Object.keys(p.counts_by_year || {}).forEach(function(y) {
+      citByYear[y] = (citByYear[y] || 0) + p.counts_by_year[y];
+    });
+  });
+  var citYears = Object.keys(citByYear).map(Number).sort(function(a,b){return a-b;});
+  var pubYears = Object.keys(pubByYear).map(Number).sort(function(a,b){return a-b;});
+
+  var citedTrackedSum = citYears.reduce(function(s,y){ return s + citByYear[y]; }, 0);
+  var untrackedNote = totalCitations - citedTrackedSum;
+
+  function cumulative(yearsArr, byYear) {
+    var run = 0, out = [];
+    yearsArr.forEach(function(y) { run += byYear[y]; out.push({year: y, value: run}); });
+    return out;
+  }
+  var cumCitations = cumulative(citYears, citByYear);
+  var cumPubs = cumulative(pubYears, pubByYear);
+
+  /* ---------- SVG chart helpers ---------- */
+  var NS = "http://www.w3.org/2000/svg";
+  function svgEl(tag, attrs) {
+    var el = document.createElementNS(NS, tag);
+    for (var k in attrs) el.setAttribute(k, attrs[k]);
+    return el;
+  }
+  function makeSvg(vbW, vbH) {
+    return svgEl("svg", {viewBox: "0 0 " + vbW + " " + vbH, preserveAspectRatio: "xMidYMid meet"});
+  }
+
+  // Area/line chart: single series
+  function areaChart(container, points, opts) {
+    opts = opts || {};
+    var W = 760, H = 300, padL = 55, padR = 20, padT = 16, padB = 34;
+    var svg = makeSvg(W, H);
+    var maxV = Math.max.apply(null, points.map(function(p){return p.value;})) || 1;
+    var n = points.length;
+    var xw = (W - padL - padR) / Math.max(n - 1, 1);
+    function X(i) { return padL + i * xw; }
+    function Y(v) { return H - padB - (v / maxV) * (H - padT - padB); }
+
+    // gridlines + y labels
+    for (var g = 0; g <= 4; g++) {
+      var gv = (maxV / 4) * g;
+      var gy = Y(gv);
+      svg.appendChild(svgEl("line", {x1: padL, x2: W - padR, y1: gy, y2: gy, stroke: "var(--border)", "stroke-width": 1}));
+      var lbl = svgEl("text", {x: padL - 8, y: gy + 4, "text-anchor": "end", "font-size": 11, fill: "var(--muted)"});
+      lbl.textContent = Math.round(gv).toLocaleString();
+      svg.appendChild(lbl);
+    }
+    // x labels (sparse)
+    points.forEach(function(p, i) {
+      if (n <= 10 || i % Math.ceil(n / 10) === 0 || i === n - 1) {
+        var t = svgEl("text", {x: X(i), y: H - padB + 18, "text-anchor": "middle", "font-size": 11, fill: "var(--muted)"});
+        t.textContent = p.year;
+        svg.appendChild(t);
+      }
+    });
+
+    var areaPts = points.map(function(p,i){ return X(i) + "," + Y(p.value); }).join(" ");
+    var areaPath = "M " + X(0) + "," + Y(0) + " L " + areaPts + " L " + X(n-1) + "," + Y(0) + " Z";
+    svg.appendChild(svgEl("path", {d: areaPath, fill: opts.color || PALETTE[0], "fill-opacity": 0.15, stroke: "none"}));
+
+    var linePts = "M " + areaPts.replace(/ /g, " L ").replace("M L", "M");
+    svg.appendChild(svgEl("path", {d: "M " + areaPts.split(" ").join(" L "), fill: "none", stroke: opts.color || PALETTE[0], "stroke-width": 2.5}));
+
+    points.forEach(function(p, i) {
+      var c = svgEl("circle", {cx: X(i), cy: Y(p.value), r: 3, fill: opts.color || PALETTE[0]});
+      var title = svgEl("title", {}); title.textContent = p.year + ": " + p.value.toLocaleString();
+      c.appendChild(title);
+      svg.appendChild(c);
+    });
+    container.appendChild(svg);
+  }
+
+  // Dual-axis: bars (left axis) + cumulative line (right axis)
+  function dualChart(container, byYearObj, yearsArr, cumSeries, opts) {
+    opts = opts || {};
+    var W = 760, H = 300, padL = 50, padR = 50, padT = 16, padB = 34;
+    var svg = makeSvg(W, H);
+    var n = yearsArr.length;
+    var barVals = yearsArr.map(function(y){ return byYearObj[y]; });
+    var maxBar = Math.max.apply(null, barVals) || 1;
+    var maxCum = Math.max.apply(null, cumSeries.map(function(p){return p.value;})) || 1;
+    var xw = (W - padL - padR) / n;
+    function X(i) { return padL + i * xw + xw/2; }
+    function YBar(v) { return H - padB - (v / maxBar) * (H - padT - padB); }
+    function YCum(v) { return H - padB - (v / maxCum) * (H - padT - padB); }
+
+    for (var g = 0; g <= 4; g++) {
+      var gy = H - padB - (g/4) * (H - padT - padB);
+      svg.appendChild(svgEl("line", {x1: padL, x2: W - padR, y1: gy, y2: gy, stroke: "var(--border)", "stroke-width": 1}));
+    }
+    // left axis labels (bar scale)
+    for (g = 0; g <= 4; g++) {
+      var gv = (maxBar/4)*g;
+      var t = svgEl("text", {x: padL - 8, y: H - padB - (g/4)*(H-padT-padB) + 4, "text-anchor": "end", "font-size": 10, fill: opts.barColor});
+      t.textContent = Math.round(gv);
+      svg.appendChild(t);
+    }
+    // right axis labels (cumulative scale)
+    for (g = 0; g <= 4; g++) {
+      var gv2 = (maxCum/4)*g;
+      var t2 = svgEl("text", {x: W - padR + 8, y: H - padB - (g/4)*(H-padT-padB) + 4, "text-anchor": "start", "font-size": 10, fill: opts.lineColor});
+      t2.textContent = Math.round(gv2).toLocaleString();
+      svg.appendChild(t2);
+    }
+
+    yearsArr.forEach(function(y, i) {
+      var v = byYearObj[y];
+      var bw = xw * 0.55;
+      var bx = X(i) - bw/2;
+      var by = YBar(v);
+      var rect = svgEl("rect", {x: bx, y: by, width: bw, height: (H - padB) - by, fill: opts.barColor, rx: 2});
+      var title = svgEl("title", {}); title.textContent = y + ": " + v + " that year";
+      rect.appendChild(title);
+      svg.appendChild(rect);
+      if (n <= 10 || i % Math.ceil(n/10) === 0 || i === n-1) {
+        var lbl = svgEl("text", {x: X(i), y: H - padB + 18, "text-anchor": "middle", "font-size": 11, fill: "var(--muted)"});
+        lbl.textContent = y;
+        svg.appendChild(lbl);
+      }
+    });
+
+    var linePts = cumSeries.map(function(p,i){ return X(i) + "," + YCum(p.value); }).join(" L ");
+    svg.appendChild(svgEl("path", {d: "M " + linePts, fill: "none", stroke: opts.lineColor, "stroke-width": 2.5}));
+    cumSeries.forEach(function(p,i) {
+      var c = svgEl("circle", {cx: X(i), cy: YCum(p.value), r: 3, fill: opts.lineColor});
+      var title = svgEl("title", {}); title.textContent = p.year + ": " + p.value.toLocaleString() + " cumulative";
+      c.appendChild(title);
+      svg.appendChild(c);
+    });
+
+    container.appendChild(svg);
+  }
+
+  // Horizontal bar chart
+  function hBarChart(container, items, opts) {
+    opts = opts || {};
+    var W = 760, rowH = 30, padL = 260, padR = 60, padT = 10, padB = 10;
+    var H = padT + padB + items.length * rowH;
+    var svg = makeSvg(W, H);
+    var maxV = Math.max.apply(null, items.map(function(d){return d.value;})) || 1;
+    items.forEach(function(d, i) {
+      var y = padT + i * rowH;
+      var bw = (d.value / maxV) * (W - padL - padR);
+      var label = svgEl("text", {x: padL - 8, y: y + rowH/2 + 4, "text-anchor": "end", "font-size": 11, fill: "var(--text)"});
+      label.textContent = d.label;
+      svg.appendChild(label);
+      var rect = svgEl("rect", {x: padL, y: y + 5, width: Math.max(bw,2), height: rowH - 10, fill: PALETTE[i % PALETTE.length], rx: 3});
+      var title = svgEl("title", {}); title.textContent = d.fullLabel + " — " + d.value.toLocaleString() + " citations";
+      rect.appendChild(title);
+      svg.appendChild(rect);
+      var val = svgEl("text", {x: padL + bw + 6, y: y + rowH/2 + 4, "font-size": 11, fill: "var(--muted)", "font-weight": "700"});
+      val.textContent = d.value.toLocaleString();
+      svg.appendChild(val);
+    });
+    container.appendChild(svg);
+  }
+
+  function chartCard(title, note) {
+    var card = document.createElement("div");
+    card.className = "chart-card";
+    var h = document.createElement("h3"); h.textContent = title;
+    card.appendChild(h);
+    if (note) {
+      var n = document.createElement("div"); n.className = "chart-note"; n.textContent = note;
+      card.appendChild(n);
+    }
+    document.getElementById("charts").appendChild(card);
+    return card;
+  }
+
+  var chartsEl = document.getElementById("charts");
+
+  var c1 = chartCard("Cumulative citations over time",
+    untrackedNote > 0 ? ("+" + untrackedNote + " earlier citations to pre-2012 papers aren't broken out by year by the data source and are excluded from this curve.") : "");
+  areaChart(c1, cumCitations, {color: PALETTE[0]});
+
+  var c2 = chartCard("Citations received per year", "Bars = citations received that year (left axis). Line = cumulative total (right axis).");
+  dualChart(c2, citByYear, citYears, cumCitations, {barColor: PALETTE[1], lineColor: PALETTE[0]});
+  var leg2 = document.createElement("div"); leg2.className = "legend";
+  leg2.innerHTML = '<span><span class="swatch" style="background:'+PALETTE[1]+'"></span>Citations that year</span><span><span class="swatch" style="background:'+PALETTE[0]+'"></span>Cumulative</span>';
+  c2.appendChild(leg2);
+
+  var c3 = chartCard("Publications per year", "Bars = papers published that year (left axis). Line = cumulative paper count (right axis).");
+  dualChart(c3, pubByYear, pubYears, cumPubs, {barColor: PALETTE[2], lineColor: PALETTE[4]});
+  var leg3 = document.createElement("div"); leg3.className = "legend";
+  leg3.innerHTML = '<span><span class="swatch" style="background:'+PALETTE[2]+'"></span>Papers that year</span><span><span class="swatch" style="background:'+PALETTE[4]+'"></span>Cumulative</span>';
+  c3.appendChild(leg3);
+
+  var top = PUBS.slice().sort(function(a,b){ return b.cited_by_count - a.cited_by_count; }).slice(0, 10);
+  var c4 = chartCard("Top-cited papers", "");
+  hBarChart(c4, top.map(function(p) {
+    var lbl = p.title.length > 42 ? p.title.slice(0,40) + "…" : p.title;
+    return {label: p.year + " · " + lbl, fullLabel: p.title, value: p.cited_by_count};
+  }));
+
+  /* ---------- publications table ---------- */
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, function(c) {
+      return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];
+    });
+  }
+
+  function formatAuthors(authors) {
+    var esc = authors.map(function(a) {
+      var h = escapeHtml(a);
+      return a === YOU ? '<span class="you">' + h + '</span>' : h;
+    });
+    if (authors.length <= 6) {
+      return esc.join(", ");
+    }
+    var first = esc[0];
+    var last = esc[esc.length - 1];
+    var middle = esc.slice(1, -1);
+    var visibleMiddle = middle.slice(0, 4);
+    var hiddenMiddle = middle.slice(4);
+    var uid = "a" + Math.random().toString(36).slice(2, 9);
+    var collapsed = [first].concat(visibleMiddle).join(", ") +
+      (hiddenMiddle.length ? ', <span class="more-toggle" data-target="' + uid + '">+' + hiddenMiddle.length + ' more</span>, ' : ", ") +
+      last;
+    var full = esc.join(", ");
+    return '<span class="authors-collapsed">' + collapsed + '</span>' +
+      '<span class="authors-full" id="' + uid + '" style="display:none">' + full + ' <span class="more-toggle" data-collapse="' + uid + '">show less</span></span>';
+  }
+
+  var types = Array.from(new Set(PUBS.map(function(p){ return p.type; }))).sort();
+  var typeSelect = document.getElementById("typeFilter");
+  types.forEach(function(t) {
+    var o = document.createElement("option"); o.value = t; o.textContent = t;
+    typeSelect.appendChild(o);
+  });
+
+  var sortKey = "cited_by_count", sortDir = -1;
+  var searchEl = document.getElementById("search");
+  var tbody = document.getElementById("pubsBody");
+  var resultCount = document.getElementById("resultCount");
+
+  function render() {
+    var q = searchEl.value.trim().toLowerCase();
+    var tf = typeSelect.value;
+    var rows = PUBS.filter(function(p) {
+      if (tf && p.type !== tf) return false;
+      if (!q) return true;
+      var hay = (p.title + " " + p.authors.join(" ") + " " + (p.venue||"")).toLowerCase();
+      return hay.indexOf(q) !== -1;
+    });
+    rows.sort(function(a, b) {
+      var av = a[sortKey], bv = b[sortKey];
+      if (sortKey === "authors") { av = a.authors.join(", "); bv = b.authors.join(", "); }
+      if (typeof av === "string") { av = av.toLowerCase(); bv = (bv||"").toLowerCase(); }
+      if (av < bv) return -1 * sortDir;
+      if (av > bv) return 1 * sortDir;
+      return 0;
+    });
+    tbody.innerHTML = rows.map(function(p) {
+      var doiUrl = p.doi ? ("https://doi.org/" + p.doi) : (p.landing_page_url || "");
+      var titleHtml = doiUrl
+        ? '<a href="' + escapeHtml(doiUrl) + '" target="_blank" rel="noopener">' + escapeHtml(p.title) + '</a>'
+        : escapeHtml(p.title);
+      return "<tr>" +
+        '<td class="title-cell">' + titleHtml + (p.venue ? '<span class="venue">' + escapeHtml(p.venue) + '</span>' : '') + "</td>" +
+        '<td class="authors">' + formatAuthors(p.authors) + "</td>" +
+        '<td><span class="type-pill">' + escapeHtml(p.type) + "</span></td>" +
+        "<td>" + (p.year || "") + "</td>" +
+        '<td><span class="badge">' + p.cited_by_count.toLocaleString() + "</span></td>" +
+        "</tr>";
+    }).join("");
+    resultCount.textContent = rows.length + " of " + PUBS.length + " publications";
+  }
+
+  document.querySelectorAll("table.pubs th[data-key]").forEach(function(th) {
+    th.addEventListener("click", function() {
+      var key = th.getAttribute("data-key");
+      if (sortKey === key) { sortDir *= -1; } else { sortKey = key; sortDir = key === "cited_by_count" ? -1 : 1; }
+      document.querySelectorAll("table.pubs th").forEach(function(h){ h.classList.remove("sorted-asc","sorted-desc"); });
+      th.classList.add(sortDir === 1 ? "sorted-asc" : "sorted-desc");
+      render();
+    });
+  });
+  searchEl.addEventListener("input", render);
+  typeSelect.addEventListener("change", render);
+  tbody.addEventListener("click", function(e) {
+    var t = e.target;
+    if (t.classList.contains("more-toggle")) {
+      if (t.dataset.target) {
+        t.closest(".authors-collapsed").style.display = "none";
+        document.getElementById(t.dataset.target).style.display = "inline";
+      } else if (t.dataset.collapse) {
+        document.getElementById(t.dataset.collapse).style.display = "none";
+        document.getElementById(t.dataset.collapse).previousElementSibling.style.display = "inline";
+      }
+    }
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
