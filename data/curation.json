@@ -1,0 +1,28 @@
+{
+  "_comment": "Persistent human curation decisions for the publications list. scripts/curate.py reads this so re-running the pipeline never requires re-doing the manual review. Edit this file to change decisions.",
+  "orcid": "0000-0003-1922-439X",
+  "reviewed_by": "vagisha",
+  "reviewed_date": "2026-07-20",
+
+  "excluded_ids": [
+    {
+      "openalex_id": "https://openalex.org/W4213271093",
+      "title": "A Modified Feature Optimization Approach with Convolutional Neural Network for Apple Leaf Disease Detection",
+      "reason": "Name collision - a different Vagisha Sharma (ML / apple leaf disease detection; co-authors Amandeep Verma, Neelam Goel). Confirmed not mine."
+    }
+  ],
+
+  "preprint_policy": {
+    "rule": "drop_preprint_if_published_exists",
+    "description": "Keep a preprint only if it has NO corresponding published (non-preprint) paper. Matching is by normalized title. Preprints with a published counterpart are dropped so the paper is counted once (the published version is kept).",
+    "match_method": "normalized_title_exact"
+  },
+
+  "force_keep_preprint_ids": [],
+  "force_drop_ids": [],
+
+  "notes": [
+    "piNET (W2937896859, 2019 bioRxiv) has no published counterpart -> kept as a preprint.",
+    "If a future re-fetch adds a published version of piNET, the auto-rule will drop the preprint automatically."
+  ]
+}
