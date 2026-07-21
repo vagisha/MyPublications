@@ -13,7 +13,7 @@ site/      The generated web page and assets
 
 ## Live page
 
-**https://vagisha.github.io/vsharma-publications/**
+**https://vagisha.github.io/vsharma-publications-1/**
 
 Published via GitHub Pages, deployed automatically by
 `.github/workflows/deploy-pages.yml` whenever `site/index.html` changes on
