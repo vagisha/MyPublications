@@ -326,51 +326,6 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
     return svgEl("svg", {viewBox: "0 0 " + vbW + " " + vbH, preserveAspectRatio: "xMidYMid meet"});
   }
 
-  // Area/line chart: single series
-  function areaChart(container, points, opts) {
-    opts = opts || {};
-    var W = 760, H = 300, padL = 55, padR = 20, padT = 16, padB = 34;
-    var svg = makeSvg(W, H);
-    var maxV = Math.max.apply(null, points.map(function(p){return p.value;})) || 1;
-    var n = points.length;
-    var xw = (W - padL - padR) / Math.max(n - 1, 1);
-    function X(i) { return padL + i * xw; }
-    function Y(v) { return H - padB - (v / maxV) * (H - padT - padB); }
-
-    // gridlines + y labels
-    for (var g = 0; g <= 4; g++) {
-      var gv = (maxV / 4) * g;
-      var gy = Y(gv);
-      svg.appendChild(svgEl("line", {x1: padL, x2: W - padR, y1: gy, y2: gy, stroke: "var(--border)", "stroke-width": 1}));
-      var lbl = svgEl("text", {x: padL - 8, y: gy + 4, "text-anchor": "end", "font-size": 11, fill: "var(--muted)"});
-      lbl.textContent = Math.round(gv).toLocaleString();
-      svg.appendChild(lbl);
-    }
-    // x labels (sparse)
-    points.forEach(function(p, i) {
-      if (n <= 10 || i % Math.ceil(n / 10) === 0 || i === n - 1) {
-        var t = svgEl("text", {x: X(i), y: H - padB + 18, "text-anchor": "middle", "font-size": 11, fill: "var(--muted)"});
-        t.textContent = p.year;
-        svg.appendChild(t);
-      }
-    });
-
-    var areaPts = points.map(function(p,i){ return X(i) + "," + Y(p.value); }).join(" ");
-    var areaPath = "M " + X(0) + "," + Y(0) + " L " + areaPts + " L " + X(n-1) + "," + Y(0) + " Z";
-    svg.appendChild(svgEl("path", {d: areaPath, fill: opts.color || PALETTE[0], "fill-opacity": 0.15, stroke: "none"}));
-
-    var linePts = "M " + areaPts.replace(/ /g, " L ").replace("M L", "M");
-    svg.appendChild(svgEl("path", {d: "M " + areaPts.split(" ").join(" L "), fill: "none", stroke: opts.color || PALETTE[0], "stroke-width": 2.5}));
-
-    points.forEach(function(p, i) {
-      var c = svgEl("circle", {cx: X(i), cy: Y(p.value), r: 3, fill: opts.color || PALETTE[0]});
-      var title = svgEl("title", {}); title.textContent = p.year + ": " + p.value.toLocaleString();
-      c.appendChild(title);
-      svg.appendChild(c);
-    });
-    container.appendChild(svg);
-  }
-
   // Dual-axis: bars (left axis) + cumulative line (right axis)
   function dualChart(container, byYearObj, yearsArr, cumSeries, opts) {
     opts = opts || {};
@@ -446,7 +401,7 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
       label.textContent = d.label;
       svg.appendChild(label);
       var rect = svgEl("rect", {x: padL, y: y + 5, width: Math.max(bw,2), height: rowH - 10, fill: PALETTE[i % PALETTE.length], rx: 3});
-      var title = svgEl("title", {}); title.textContent = d.fullLabel + " — " + d.value.toLocaleString() + " citations";
+      var title = svgEl("title", {}); title.textContent = d.fullLabel + " — " + d.value.toLocaleString() + " " + (opts.unit || "citations");
       rect.appendChild(title);
       svg.appendChild(rect);
       var val = svgEl("text", {x: padL + bw + 6, y: y + rowH/2 + 4, "font-size": 11, fill: "var(--muted)", "font-weight": "700"});
@@ -471,28 +426,42 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
 
   var chartsEl = document.getElementById("charts");
 
-  var c1 = chartCard("Cumulative citations over time",
-    untrackedNote > 0 ? ("+" + untrackedNote + " earlier citations to pre-2012 papers aren't broken out by year by the data source and are excluded from this curve.") : "");
-  areaChart(c1, cumCitations, {color: PALETTE[0]});
+  var citNote = "Bars = citations received that year (left axis). Line = cumulative total (right axis).";
+  if (untrackedNote > 0) citNote += " +" + untrackedNote + " earlier citations to pre-2012 papers aren't broken out by year by the data source and are excluded from the cumulative line.";
+  var c1 = chartCard("Citations received per year", citNote);
+  dualChart(c1, citByYear, citYears, cumCitations, {barColor: PALETTE[1], lineColor: PALETTE[0]});
+  var leg1 = document.createElement("div"); leg1.className = "legend";
+  leg1.innerHTML = '<span><span class="swatch" style="background:'+PALETTE[1]+'"></span>Citations that year</span><span><span class="swatch" style="background:'+PALETTE[0]+'"></span>Cumulative</span>';
+  c1.appendChild(leg1);
 
-  var c2 = chartCard("Citations received per year", "Bars = citations received that year (left axis). Line = cumulative total (right axis).");
-  dualChart(c2, citByYear, citYears, cumCitations, {barColor: PALETTE[1], lineColor: PALETTE[0]});
+  var c2 = chartCard("Publications per year", "Bars = papers published that year (left axis). Line = cumulative paper count (right axis).");
+  dualChart(c2, pubByYear, pubYears, cumPubs, {barColor: PALETTE[2], lineColor: PALETTE[4]});
   var leg2 = document.createElement("div"); leg2.className = "legend";
-  leg2.innerHTML = '<span><span class="swatch" style="background:'+PALETTE[1]+'"></span>Citations that year</span><span><span class="swatch" style="background:'+PALETTE[0]+'"></span>Cumulative</span>';
+  leg2.innerHTML = '<span><span class="swatch" style="background:'+PALETTE[2]+'"></span>Papers that year</span><span><span class="swatch" style="background:'+PALETTE[4]+'"></span>Cumulative</span>';
   c2.appendChild(leg2);
 
-  var c3 = chartCard("Publications per year", "Bars = papers published that year (left axis). Line = cumulative paper count (right axis).");
-  dualChart(c3, pubByYear, pubYears, cumPubs, {barColor: PALETTE[2], lineColor: PALETTE[4]});
-  var leg3 = document.createElement("div"); leg3.className = "legend";
-  leg3.innerHTML = '<span><span class="swatch" style="background:'+PALETTE[2]+'"></span>Papers that year</span><span><span class="swatch" style="background:'+PALETTE[4]+'"></span>Cumulative</span>';
-  c3.appendChild(leg3);
-
   var top = PUBS.slice().sort(function(a,b){ return b.cited_by_count - a.cited_by_count; }).slice(0, 10);
-  var c4 = chartCard("Top-cited papers", "");
-  hBarChart(c4, top.map(function(p) {
+  var c3 = chartCard("Top-cited papers", "");
+  hBarChart(c3, top.map(function(p) {
     var lbl = p.title.length > 42 ? p.title.slice(0,40) + "…" : p.title;
     return {label: p.year + " · " + lbl, fullLabel: p.title, value: p.cited_by_count};
   }));
+
+  var collabCounts = {};
+  PUBS.forEach(function(p) {
+    p.authors.forEach(function(a) {
+      if (a === YOU) return;
+      collabCounts[a] = (collabCounts[a] || 0) + 1;
+    });
+  });
+  var topCollab = Object.keys(collabCounts)
+    .map(function(name){ return {name: name, count: collabCounts[name]}; })
+    .sort(function(a,b){ return b.count - a.count; })
+    .slice(0, 10);
+  var c4 = chartCard("Top collaborators", "Number of shared publications, across the curated list.");
+  hBarChart(c4, topCollab.map(function(c) {
+    return {label: c.name, fullLabel: c.name, value: c.count};
+  }), {unit: "shared publications"});
 
   /* ---------- publications table ---------- */
   function escapeHtml(s) {

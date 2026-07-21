@@ -70,9 +70,12 @@ Goal: layout with a publications list and citation growth chart(s).
 2. No bio text.
 3. No photo/headshot.
 4. Header links: ORCID only (https://orcid.org/0000-0003-1922-439X).
-5. Charts (all 4): cumulative citations over time; citations/year (dual-axis:
-   bars = per-year, line = cumulative); publications/year (dual-axis: bars =
-   per-year, line = cumulative pub count); top-cited papers (bar chart).
+5. Charts (4, revised 2026-07-20 — dropped standalone cumulative-citations
+   chart as redundant with the dual-axis line, replaced with top collaborators):
+   citations/year (dual-axis: bars = per-year, line = cumulative, footnote on
+   ~42 pre-2012 untracked citations); publications/year (dual-axis: bars =
+   per-year, line = cumulative pub count); top-cited papers (bar chart); top
+   collaborators (bar chart, count of shared publications, excludes self).
 6. Stat tiles: total papers, total citations, h-index, years active.
 7. Publications shown as a single **sortable + filterable table** (not cards),
    default sort = citation count descending. Columns: Title (linked to DOI),
