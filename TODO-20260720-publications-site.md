@@ -62,7 +62,7 @@ Goal: collect the list of papers + citation counts broken down by year
   Dropped 4 preprints (QC framework, Comet, senescence atlas, phospho library);
   kept piNET (2019, no published counterpart).
 
-### Step 2 — Design the page ⬜ IN PROGRESS
+### Step 2 — Design the page ✅ DONE (2026-07-20, approved by user)
 Goal: layout with a publications list and citation growth chart(s).
 
 **Design decisions (from Q&A on 2026-07-20):**
@@ -95,7 +95,7 @@ CSS/JS/chart-rendering inlined, no external/CDN requests, works offline.
 - [x] Verified in-browser: charts render correctly, table sort/filter/search
       work, DOI links resolve, name bolding + author-expand toggle work,
       no console errors, no external resource loads (confirmed standalone)
-- [ ] **USER: review the page**
+- [x] **USER reviewed and approved** (2026-07-20)
 
 ### Step 3 — Publish live ⬜ TODO
 Goal: a shareable live URL.
