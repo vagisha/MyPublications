@@ -11,13 +11,19 @@ data/      Gathered publication + citation data (JSON/CSV)
 site/      The generated web page and assets
 ```
 
+## Live page
+
+**https://vagisha.github.io/MyPublications/**
+
+Published via GitHub Pages, deployed automatically by
+`.github/workflows/deploy-pages.yml` whenever `site/index.html` changes on
+`main`. The page is a single standalone HTML file (no external dependencies).
+
 ## Status
 
-Work in progress. Steps:
-
-1. **Gather publication data** — papers + citation-by-year counts.
-2. **Design the page** — publications list + citation growth charts.
-3. **Publish it live** — a shareable web page.
+1. ✅ **Gather publication data** — papers + citation-by-year counts.
+2. ✅ **Design the page** — publications list + citation growth charts.
+3. ✅ **Publish it live** — a shareable web page.
 
 ## Running the scripts
 

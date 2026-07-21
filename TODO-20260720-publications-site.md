@@ -97,11 +97,19 @@ CSS/JS/chart-rendering inlined, no external/CDN requests, works offline.
       no console errors, no external resource loads (confirmed standalone)
 - [x] **USER reviewed and approved** (2026-07-20)
 
-### Step 3 — Publish live ⬜ TODO
+### Step 3 — Publish live ✅ DONE (2026-07-20)
 Goal: a shareable live URL.
-- [ ] Decide hosting (Artifact / GitHub Pages / other)
-- [ ] Publish
-- [ ] Confirm the shareable link works
+- [x] Hosting = **GitHub Pages**, deployed via GitHub Actions
+      (`.github/workflows/deploy-pages.yml` — builds from `site/`, triggers
+      on push to `main` when `site/**` changes; also `workflow_dispatch`)
+- [x] Enabled Pages on the repo (`build_type: workflow`)
+- [x] Published — first deploy succeeded (run 29795587789)
+- [x] Confirmed live: page loads, renders, no console errors
+
+**Live URL: https://vagisha.github.io/MyPublications/**
+
+To publish future updates: re-run the pipeline (fetch → curate → build_site),
+commit + push `site/index.html` — the workflow redeploys automatically.
 
 ---
 
