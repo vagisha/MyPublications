@@ -24,6 +24,8 @@ saved as reusable scripts that can be run again.
 - Save code as reusable, re-runnable scripts in `scripts/`.
 - Multi-step process — wait for approval at each step before moving on.
 - Keep this spec updated as work progresses.
+- **The page must be a SINGLE STANDALONE HTML file** — all CSS, JS, chart
+  rendering, and images inlined (base64); NO external/CDN requests, works offline.
 
 ---
 
@@ -60,10 +62,30 @@ Goal: collect the list of papers + citation counts broken down by year
   Dropped 4 preprints (QC framework, Comet, senescence atlas, phospho library);
   kept piNET (2019, no published counterpart).
 
-### Step 2 — Design the page ⬜ TODO
+### Step 2 — Design the page ⬜ IN PROGRESS
 Goal: layout with a publications list and citation growth chart(s).
-- [ ] Decide charts (cumulative citations/year, citations per paper, h-index, etc.)
-- [ ] Decide layout & style
+
+**Design decisions (from Q&A on 2026-07-20):**
+1. Header: "Vagisha Sharma" — subtitle "University of Washington" (no job title).
+2. No bio text.
+3. No photo/headshot.
+4. Header links: ORCID only (https://orcid.org/0000-0003-1922-439X).
+5. Charts (all 4): cumulative citations over time; citations/year (dual-axis:
+   bars = per-year, line = cumulative); publications/year (dual-axis: bars =
+   per-year, line = cumulative pub count); top-cited papers (bar chart).
+6. Stat tiles: total papers, total citations, h-index, years active.
+7. Publications shown as a single **sortable + filterable table** (not cards),
+   default sort = citation count descending. Columns: Title (linked to DOI),
+   Authors, Type, Year, Citations.
+8. Author list per row: show first + last author + up to 4 in between,
+   expandable for the rest; bold "Vagisha Sharma" wherever it appears.
+9. Style: light theme, bright multi-colored accents (not a single accent color).
+10. Footer: data source (OpenAlex) + last-updated date + brief note on
+    citation-counting methodology.
+
+**Hard requirement:** page must be a **single standalone HTML file** — all
+CSS/JS/chart-rendering inlined, no external/CDN requests, works offline.
+
 - [ ] Build page generator script → save to `scripts/`
 - [ ] Generate into `site/`
 - [ ] Review with the user
