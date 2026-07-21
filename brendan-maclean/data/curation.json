@@ -1,0 +1,28 @@
+{
+  "_comment": "Persistent human curation decisions for the publications list. scripts/curate.py reads this so re-running the pipeline never requires re-doing the manual review. Edit this file to change decisions.",
+  "orcid": "0000-0002-9575-0255",
+  "reviewed_by": "vagisha",
+  "reviewed_date": "2026-07-20",
+
+  "excluded_ids": [
+    {
+      "openalex_id": "https://openalex.org/W2382434149",
+      "title": "Total protein determination in pigeon plasma and serum: comparison of refractometric methods with the biuret method",
+      "reason": "Name collision - different Brendan MacLean (veterinary/biochemistry, 1996). Confirmed not his."
+    },
+    {
+      "openalex_id": "https://openalex.org/W2909632565",
+      "title": "Stratigraphic interpretation of the central Grand Banks from high-resolution seismic reflection profiles",
+      "reason": "Name collision - different Brendan MacLean (geology, 1975). Confirmed not his."
+    }
+  ],
+
+  "preprint_policy": {
+    "rule": "drop_preprint_if_published_exists",
+    "description": "Keep a preprint only if it has NO corresponding published (non-preprint) paper. Matching is by normalized title. Preprints with a published counterpart are dropped so the paper is counted once (the published version is kept).",
+    "match_method": "normalized_title_exact"
+  },
+
+  "force_keep_preprint_ids": [],
+  "force_drop_ids": []
+}

@@ -1,4 +1,4 @@
-# MyPublications
+# vsharma-publications
 
 A personal, shareable web page of my published papers, with charts showing how
 citations have grown over the years.
@@ -13,7 +13,7 @@ site/      The generated web page and assets
 
 ## Live page
 
-**https://vagisha.github.io/MyPublications/**
+**https://vagisha.github.io/vsharma-publications/**
 
 Published via GitHub Pages, deployed automatically by
 `.github/workflows/deploy-pages.yml` whenever `site/index.html` changes on

@@ -43,7 +43,7 @@ def fetch_page(cursor, orcid, mailto, per_page=200, max_retries=8):
     delay = 2.0
     for attempt in range(1, max_retries + 1):
         try:
-            req = urllib.request.Request(url, headers={"User-Agent": f"MyPublications ({mailto})"})
+            req = urllib.request.Request(url, headers={"User-Agent": f"vsharma-publications ({mailto})"})
             with urllib.request.urlopen(req, timeout=60) as resp:
                 return json.load(resp)
         except urllib.error.HTTPError as e:

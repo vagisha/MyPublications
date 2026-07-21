@@ -2,7 +2,7 @@
 
 **Created:** 2026-07-20
 **Owner:** vagisha (vagisha@gmail.com)
-**Repo:** https://github.com/vagisha/MyPublications
+**Repo:** https://github.com/vagisha/vsharma-publications (renamed 2026-07-20, was `MyPublications`)
 
 ---
 
@@ -106,7 +106,7 @@ Goal: a shareable live URL.
 - [x] Published — first deploy succeeded (run 29795587789)
 - [x] Confirmed live: page loads, renders, no console errors
 
-**Live URL: https://vagisha.github.io/MyPublications/**
+**Live URL: https://vagisha.github.io/vsharma-publications/**
 
 To publish future updates: re-run the pipeline (fetch → curate → build_site),
 commit + push `site/index.html` — the workflow redeploys automatically.
@@ -116,6 +116,8 @@ commit + push `site/index.html` — the workflow redeploys automatically.
 ## Decisions log
 
 - 2026-07-20: Repo created and pushed public as `MyPublications`.
+- 2026-07-20: Repo renamed to `vsharma-publications` (GitHub Pages URL updated
+  automatically to https://vagisha.github.io/vsharma-publications/).
 - 2026-07-20: Convention — run Python with `-X utf8`.
 - 2026-07-20: Primary data source = OpenAlex, keyed by ORCID.
 - 2026-07-20: Excluded the CNN/apple-leaf paper (name collision).
